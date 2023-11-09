@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Message } from '../types';
 import io from 'socket.io-client';
+import { clear } from 'console';
 
 const Messages = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -9,6 +10,7 @@ const Messages = () => {
   const [socket, setSocket] = useState<any>(null); // Déclarer socket ici
 
   useEffect(() => {
+    setInterval(() => {
     const fetchMessages = async () => {
       try {
         const response = await fetch('/api/messages');
@@ -22,6 +24,7 @@ const Messages = () => {
       }
     };
     fetchMessages();
+  },5000)
     const newSocket: any = io('http://localhost:3001'); // Remplacez par l'URL de votre serveur Socket.io
     setSocket(newSocket); // Mettez à jour la variable socket
 
@@ -30,6 +33,7 @@ const Messages = () => {
       // Mettre à jour votre état local avec le message reçu
       setMessages((prevMessages) => [...prevMessages, data]);
     });
+    // interval()
 
     // Déconnecter le socket lorsque le composant est démonté
     return () => {
@@ -65,10 +69,17 @@ const Messages = () => {
   
       // Effacez le champ de message après l'envoi
       setMessage('');
+      // window.location.reload()
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
+//   function interval() {
+    
+//     setInterval(() => {
+//     window.location.reload()
+//   },5000)
+// }
 
   const destinataire_idCalcul = () => {
     if (localStorage.getItem('userId') === "1") {
