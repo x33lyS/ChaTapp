@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 
 const Messages = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
   const [socket, setSocket] = useState<any>(null); // Déclarer socket ici
 
   useEffect(() => {
@@ -26,9 +26,10 @@ const Messages = () => {
     setSocket(newSocket); // Mettez à jour la variable socket
 
     // Écouter l'événement "receive_msg" pour recevoir des messages du serveur
-    newSocket.on('receive_msg', (data: any) => {
-      // Mettre à jour votre état local avec le message reçu
+    newSocket.on('receive_msg', (data: Message) => {
+      console.log('Message reçu du serveur:', data);
       setMessages((prevMessages) => [...prevMessages, data]);
+      console.log('Messages mis à jour :', messages);
     });
 
     // Déconnecter le socket lorsque le composant est démonté
@@ -37,15 +38,23 @@ const Messages = () => {
     };
   }, []);
     
+ 
 
   const sendMessage = () => {
-    // Envoyez un message au serveur via Socket.io
-    const data = { message };
-    // Vous pouvez personnaliser les noms d'événements selon votre application
-    socket.emit('send_msg', data);
-
-    // Effacez le champ de message après l'envoi
-    setMessage('');
+    const id = 3
+    if (socket) {
+      const data: Message = { 
+        id: id,
+        expediteur_id: 1,
+        destinataire_id: 2,
+        date_message: "yest",
+        texte: message
+       };
+      socket.emit('send_msg', data);
+      // Effacez le champ de message après l'envoi
+      setMessages((prevMessages) => [...prevMessages, data]);
+      setMessage('');
+    }
   };
 
   return (
@@ -61,7 +70,8 @@ const Messages = () => {
       ) : (
         <p>Aucun message à afficher.</p>
       )}
-      </ul>
+      </ul>   
+      
       <input
         type="text"
         value={message}

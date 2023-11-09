@@ -14,7 +14,6 @@ export async function GET (req: NextRequest){
       data: rows,
     };
     connection.release();
-    console.log(response);
     
     if (response.data && response.data.length > 0) {
       return NextResponse.json(response.data[0].id);

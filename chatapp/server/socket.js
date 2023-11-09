@@ -24,7 +24,9 @@ const http = require("http");
     socket.on("send_msg", (data) => {
       console.log(data, "DATA");
       //This will send a message to a specific room ID
-      socket.to(data.roomId).emit("receive_msg", data);
+      socket.emit("receive_msg", data);
+      io.to(data).emit("receive_msg", data);
+
     });
 
     socket.on("disconnect", () => {
