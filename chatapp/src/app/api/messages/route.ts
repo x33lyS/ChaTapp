@@ -5,7 +5,6 @@ export async function GET(request: NextRequest) {
   try {
     // Obtenez une connexion à partir du pool de connexions
     const connection = await pool.getConnection();
-
     // Exécutez une requête SQL pour récupérer les données depuis la base de données
     const rows = await connection.query("SELECT * FROM chat_messages");
 
