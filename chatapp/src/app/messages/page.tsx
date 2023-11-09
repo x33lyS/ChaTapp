@@ -1,10 +1,12 @@
-// pages/messages.tsx
+"use client"
 import { useState, useEffect } from 'react';
 
 interface Message {
-  id: number;
-  user: string;
-  content: string;
+    id: number;
+    expediteur_id: number;
+    destinataire_id: number;
+    date_message: string;
+    texte: string;
 }
 
 const Messages = () => {
@@ -14,6 +16,8 @@ const Messages = () => {
     const fetchMessages = async () => {
       const response = await fetch('/api/messages');
       const data = await response.json();
+      console.log(data);
+      
       setMessages(data);
     };
 
@@ -25,7 +29,7 @@ const Messages = () => {
       <h1>Messages</h1>
       <ul>
         {messages.map((message) => (
-          <li key={message.id}>{message.content}</li>
+          <li key={message.id}>{message.texte}</li>
         ))}
       </ul>
     </div>
