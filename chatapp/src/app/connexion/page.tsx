@@ -1,36 +1,42 @@
-"use client"
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 const Connexion = () => {
-  const [pseudo, setPseudo] = useState('');
+  const [pseudo, setPseudo] = useState("");
 
-  const handlePseudoChange = (event:any) => {
+  const handlePseudoChange = (event: any) => {
     setPseudo(event.target.value);
   };
-
-  const handleConnexion = async () => {
+  const handleConnexion: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
+    event.preventDefault(); // Empêche le comportement par défaut du formulaire
+  
+    const pseudoInput = document.getElementById('pseudo') as HTMLInputElement;
+    const pseudo = pseudoInput.value;
+  
     try {
       const response = await fetch(`/api/connexion?pseudo=${pseudo}`);
-      const data = await response.json();
-
-      if (data && data.existe) {
-        // Pseudo existant, vous pouvez rediriger l'utilisateur ou effectuer d'autres actions
-        console.log('Pseudo existant');
-      } else {
-        // Pseudo non trouvé
-        console.log('Pseudo non trouvé');
-      }
+      const jsonData = await response.json(); // Récupérer directement en JSON  
+      const userId = jsonData.userId;
+      localStorage.setItem('pseudo', pseudo);
+      localStorage.setItem('userId', userId);
     } catch (error) {
-      console.error('Erreur lors de la vérification du pseudo en BDD', error);
+      console.error('Error connecting:', error);
     }
   };
+  
+  
 
   return (
     <div>
       <h1>Connexion</h1>
       <label htmlFor="pseudo">Pseudo:</label>
-      <input type="text" id="pseudo" value={pseudo} onChange={handlePseudoChange} />
-      <button onClick={handleConnexion}>Se connecter</button>
+      <input
+        type="text"
+        id="pseudo"
+        value={pseudo}
+        onChange={handlePseudoChange}
+      />
+      <button onClick={handleConnexion}>Connexion</button>
     </div>
   );
 };
