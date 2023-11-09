@@ -3,7 +3,7 @@ import { createPool } from "mariadb";
 
   const pool = createPool({
     host: 'localhost',
-    user: 'username',
+    user: 'root',
     password: 'root',
     database: 'chatapp_db',
     connectionLimit: 5,
