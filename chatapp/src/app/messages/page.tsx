@@ -9,13 +9,11 @@ const Messages = () => {
     const fetchMessages = async () => {
       try {
         const response = await fetch('/api/messages');
-
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        const responseData = await response.json();
-        const data = responseData.messages;
-        setMessages(data);
+        const data = await response.json();
+        setMessages(data.data);
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
