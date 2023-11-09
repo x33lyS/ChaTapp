@@ -53,5 +53,5 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   texte TEXT,
   FOREIGN KEY (expediteur_id) REFERENCES users(id),
   FOREIGN KEY (destinataire_id) REFERENCES users(id)
-);```
+);
 
