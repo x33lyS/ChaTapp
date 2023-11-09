@@ -37,25 +37,47 @@ const Messages = () => {
       newSocket.disconnect();
     };
   }, []);
-    
- 
 
-  const sendMessage = () => {
-    const id = 3
-    if (socket) {
-      const data: Message = { 
-        id: id,
-        expediteur_id: 1,
-        destinataire_id: 2,
-        date_message: "yest",
-        texte: message
-       };
-      socket.emit('send_msg', data);
+  const sendMessage = async () => {
+    try {
+      // Créez un objet contenant les détails du message
+      const messageData = {
+        expediteur_id: localStorage.getItem('userId'),
+        destinataire_id: destinataire_idCalcul(),
+        texte: message,
+      };
+  
+      // Envoyez le message au serveur via l'API POST
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(messageData),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+       // Envoyez un message au serveur via Socket.io
+    const data = { message };
+    // Vous pouvez personnaliser les noms d'événements selon votre application
+    socket.emit('send_msg', data);
+  
       // Effacez le champ de message après l'envoi
-      setMessages((prevMessages) => [...prevMessages, data]);
       setMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
     }
   };
+
+  const destinataire_idCalcul = () => {
+    if (localStorage.getItem('userId') === "1") {
+      return 2
+    } else {
+      return 1
+    }
+  }
 
   return (
     <div>
@@ -70,8 +92,7 @@ const Messages = () => {
       ) : (
         <p>Aucun message à afficher.</p>
       )}
-      </ul>   
-      
+      </ul>
       <input
         type="text"
         value={message}

@@ -5,20 +5,19 @@ import pool from '../../../../server/db';
 export async function GET (req: NextRequest){
   try {
     const url = new URL(req.url);
-    const pseudo = url.searchParams.get('pseudo');
+    const pseudo = url.searchParams.get('pseudo');    
     const connection = await pool.getConnection();
 
     // Exécutez une requête SQL pour vérifier si le pseudo existe
-    const [rows, fields] = await connection.query('SELECT * FROM utilisateurs WHERE pseudo = ?', [pseudo]);
-    const response = {
-      data: rows,
-    };
+    const user = await connection.query(`SELECT id FROM users WHERE prenom like '${pseudo}'`);
     connection.release();
     
-    if (response.data && response.data.length > 0) {
-      return NextResponse.json(response.data[0].id);
+    if (user.length > 0) {
+      const userId = user[0].id;
+      return NextResponse.json({ userId });
     } else {
-      return NextResponse.json(null); // ou un autre traitement approprié
+      // L'utilisateur n'a pas été trouvé
+      return NextResponse.json({ status: 404, body: 'Utilisateur non trouvé' });
     }
   } catch (error) {
     console.error("Erreur lors de la récupération des données depuis la base de données", error);

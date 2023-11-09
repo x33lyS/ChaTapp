@@ -1,0 +1,9 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Ajoutez ceci à votre fichier CSS */
+.blue-text {
+    color: blue;
+  }
+  
