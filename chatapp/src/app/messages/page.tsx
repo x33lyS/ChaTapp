@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Message } from '../types';
 import io from 'socket.io-client';
+import { clear } from 'console';
 
 const Messages = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -34,6 +35,7 @@ const Messages = () => {
     // Déconnecter le socket lorsque le composant est démonté
     return () => {
       newSocket.disconnect();
+      clearInterval(interval)
     };
   }, []);
 
@@ -65,10 +67,14 @@ const Messages = () => {
   
       // Effacez le champ de message après l'envoi
       setMessage('');
+      window.location.reload()
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };
+  const interval = setInterval(() => {
+    window.location.reload()
+  },30000)
 
   const destinataire_idCalcul = () => {
     if (localStorage.getItem('userId') === "1") {
