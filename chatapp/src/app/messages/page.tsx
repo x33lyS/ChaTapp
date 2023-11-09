@@ -82,15 +82,18 @@ const Messages = () => {
     <div>
       <h1>Messages</h1>
       <ul>
-        {messages.length ? (
-      <ul>
-        {messages.map((message, i) => (
-          <li key={i}>{message.texte}</li>
-        ))}
-      </ul>
-      ) : (
-        <p>Aucun message à afficher.</p>
-      )}
+      {messages.length ? (
+  <ul>
+    {messages.map((message, i) => (
+      <li key={i} className={message.expediteur_id === Number(localStorage.getItem('userId')) ? 'blue-text' : ''}>
+        {message.texte}
+      </li>
+    ))}
+  </ul>
+) : (
+  <p>Aucun message à afficher.</p>
+)}
+
       </ul>
       <input
         type="text"
