@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 SQL data : 
 
-USE chatapp_db;
+```USE chatapp_db;
  
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,5 +53,5 @@ CREATE TABLE IF NOT EXISTS chat_messages (
   texte TEXT,
   FOREIGN KEY (expediteur_id) REFERENCES users(id),
   FOREIGN KEY (destinataire_id) REFERENCES users(id)
-);
+);```
 
