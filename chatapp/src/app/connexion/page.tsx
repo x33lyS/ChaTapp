@@ -21,6 +21,8 @@ const Connexion = () => {
       const userId = jsonData.userId;
       localStorage.setItem("pseudo", pseudo);
       localStorage.setItem("userId", userId);
+      // Rediriger vers la page de chat /messages
+      window.location.href = "/messages";
     } catch (error) {
       console.error("Error connecting:", error);
     }
