@@ -3,7 +3,7 @@
 
   const pool = createPool({
     host: 'localhost',
-    user: 'root',
+    user: 'username',
     password: 'root',
     database: 'chatapp_db',
     connectionLimit: 5,

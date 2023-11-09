@@ -1,23 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
- 
+import pool from "../../../../server/db"; // Importez la connexion à la base de données depuis db.ts
+
 export async function GET(request: NextRequest) {
- let response = {
-    data: [ {
-        id: 1,
-        expediteur_id: 1,
-        destinataire_id: 2,
-        date_message: '2021-01-01',
-        texte: 'Salut'
-    },
-    {
-        id: 2,
-        expediteur_id: 2,
-        destinataire_id: 1,
-        date_message: '2021-01-01',
-        texte: 'Salut2'
-    }
-    ]
- }
- 
- return NextResponse.json(response);
+  try {
+    // Obtenez une connexion à partir du pool de connexions
+    const connection = await pool.getConnection();
+
+    // Exécutez une requête SQL pour récupérer les données depuis la base de données
+    const [rows, fields] = await connection.query("SELECT * FROM chat_messages");
+
+    const response = {
+      data: rows,
+    };
+
+    // Libérez la connexion une fois que vous avez terminé avec elle
+    connection.release();
+
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error("Erreur lors de la récupération des données depuis la base de données", error);
+    return NextResponse.error();
+  }
 }
