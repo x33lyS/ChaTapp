@@ -7,12 +7,10 @@ export async function GET(request: NextRequest) {
     const connection = await pool.getConnection();
 
     // Exécutez une requête SQL pour récupérer les données depuis la base de données
-    const [rows, fields] = await connection.query("SELECT * FROM chat_messages");
+    const rows = await connection.query("SELECT * FROM chat_messages");
 
-    const response = {
-      data: rows,
-    };
-
+    const response = rows
+    
     // Libérez la connexion une fois que vous avez terminé avec elle
     connection.release();
 
