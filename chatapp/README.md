@@ -34,3 +34,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+SQL data : 
+
+USE chatapp_db;
+ 
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  prenom VARCHAR(255)
+);
+ 
+
+CREATE TABLE IF NOT EXISTS chat_messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  expediteur_id INT,
+  destinataire_id INT,
+  date_message TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  texte TEXT,
+  FOREIGN KEY (expediteur_id) REFERENCES users(id),
+  FOREIGN KEY (destinataire_id) REFERENCES users(id)
+);
+
