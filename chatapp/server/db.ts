@@ -1,5 +1,5 @@
-  // db.ts
-  import { createPool } from 'mariadb';
+// db.ts
+import { createPool } from "mariadb";
 
   const pool = createPool({
     host: 'localhost',
@@ -10,3 +10,4 @@
   });
 
   export default pool;
+
