@@ -1,24 +1,24 @@
 "use client"
 import { useState, useEffect } from 'react';
-
-interface Message {
-    id: number;
-    expediteur_id: number;
-    destinataire_id: number;
-    date_message: string;
-    texte: string;
-}
+import { Message } from '../types';
 
 const Messages = () => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     const fetchMessages = async () => {
-      const response = await fetch('/api/messages');
-      const data = await response.json();
-      console.log(data);
-      
-      setMessages(data);
+      try {
+        const response = await fetch('/api/messages');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        const data = responseData.messages;
+        setMessages(data);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
     };
 
     fetchMessages();
